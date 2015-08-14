@@ -1,2 +1,0 @@
-The sum of all numbers divisible between 3 or 5 is 234168.
-This program took 0.000474432 to run.

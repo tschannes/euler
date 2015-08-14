@@ -1,4 +1,4 @@
-require '../Timer'
+require './Timer'
 
 class LargestPrimeFactor
 
