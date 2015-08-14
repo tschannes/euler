@@ -1,5 +1,4 @@
 require '../Timer'
-#require 'pry'
 
 class PaliHelpers
 
@@ -8,6 +7,7 @@ class PaliHelpers
 	def initialize(digitsPerFactor)
 		@digits = digitsPerFactor
 		@palins = Array.new
+		@notFound = true
 		super
 	end
 
@@ -48,37 +48,35 @@ end
 class PaliFinder < PaliHelpers
 
 	def findAllPalindromes(max)
-		while max > smallestPossibleFactor(@digits) * smallestPossibleFactor(@digits)
+		while max > smallestPossibleFactor(@digits) * smallestPossibleFactor(@digits) && @notFound
 			if isPalindrome(max)
-				@palins.push(max)
+				findLargest(max)
 			end
 			max -= 1
 		end
-		return @palins
+		return max
 	end
 
-	def findLargestPalindrome(ary)
-		ary.each do |num|
-			factor = largestPossibleFactor(@digits)
-			while factor > smallestPossibleFactor(@digits)
-				if factorIsInRange(num,factor) && factorIsInRange(num, num/factor)
-					if isDivisibleBy(num,factor) && isPalindrome(num)
-						puts "The greatest possible palindrome is " + num.to_s + ", its factors being " + (num/factor).to_s + " and " + factor.to_s + "."
-						return num
-					end
-				end	
-				factor -= 1
-			end
+	def findLargest(num)
+		factor = largestPossibleFactor(@digits)
+		while factor > smallestPossibleFactor(@digits)
+			if factorIsInRange(num,factor) && factorIsInRange(num, num/factor)
+				if isDivisibleBy(num,factor) && isPalindrome(num)
+					puts "The greatest possible palindrome is " + num.to_s + ", its factors being " + (num/factor).to_s + " and " + factor.to_s + "."
+					@notFound = false
+					return num
+				end
+			end	
+			factor -= 1
 		end
+
 	end
 
 	def run
 		max = findMax
-		palins = findAllPalindromes(max)
-		findLargestPalindrome(palins)
+		findAllPalindromes(max)
 		measure
 	end
-
 
 end
 
