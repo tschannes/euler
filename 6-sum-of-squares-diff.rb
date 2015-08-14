@@ -23,7 +23,6 @@ class Differ
 	end
 
 	def squareOfSum(ary)
-		#puts ary.inject(:+)
 		return square(ary.inject(:+))
 	end
 
