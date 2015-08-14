@@ -1,7 +1,7 @@
 require '../Timer'
-require 'pry'
+#require 'pry'
 
-class LargestPalindromeFinder
+class PaliHelpers
 
 	include Timer
 
@@ -30,70 +30,57 @@ class LargestPalindromeFinder
 		true if input == input.reverse
 	end
 
-	def findLargestPalindrome
-		maxFactor = largestPossibleFactor(@digits)
-		optFactor = maxFactor
-		maxNum = maxFactor * optFactor
-		while maxNum > 0
-			maxNum = maxFactor * optFactor
-			if isPalindrome(maxNum)
-				puts "The greatest possible palindrome is: " + maxNum.to_s + "."
-				return maxNum
-			else
-				optFactor -= 1
-			end
-		end
+	def factorIsInRange(palin, factor)
+		true if factor > smallestPossibleFactor(@digits) && palin/factor < largestPossibleFactor(@digits)
 	end
 
-	def run
-		findLargestPalindrome
-		measure
+	def isDivisibleBy(num, factor)
+		true if num % factor == 0
 	end
-
-end
-
-class PaliFinder < LargestPalindromeFinder
 
 	def findMax
 		max = largestPossibleFactor(@digits) * largestPossibleFactor(@digits)
 		return max
 	end
 
-	def findPalindromes(num)
-		factor = largestPossibleFactor
-		while num > smallestPossibleFactor(@digits) * smallestPossibleFactor(@digits)
+end
 
-			if isPalindrome(num)
+class PaliFinder < PaliHelpers
 
-				@palins.push(num)
-				num -= 1
-			else
-				num -= 1
+	def findAllPalindromes(max)
+		while max > smallestPossibleFactor(@digits) * smallestPossibleFactor(@digits)
+			if isPalindrome(max)
+				@palins.push(max)
 			end
+			max -= 1
 		end
 		return @palins
 	end
 
-	def factorIsInRange(palin, factor)
-		true if factor > smallestPossibleFactor(@digits) && palin/factor > smallestPossibleFactor
-
-	def isDivisibleBy(factor)
-		
+	def findLargestPalindrome(ary)
+		ary.each do |num|
+			factor = largestPossibleFactor(@digits)
+			while factor > smallestPossibleFactor(@digits)
+				if factorIsInRange(num,factor) && factorIsInRange(num, num/factor)
+					if isDivisibleBy(num,factor) && isPalindrome(num)
+						puts "The greatest possible palindrome is " + num.to_s + ", its factors being " + (num/factor).to_s + " and " + factor.to_s + "."
+						return num
+					end
+				end	
+				factor -= 1
+			end
+		end
 	end
 
-
 	def run
-		palindromes = findPalindromes(findMax)
-		puts palindromes.to_s
-		#checkFactors(palindromes)
+		max = findMax
+		palins = findAllPalindromes(max)
+		findLargestPalindrome(palins)
 		measure
 	end
 
 
 end
-
-x = LargestPalindromeFinder.new(3)
-x.run
 
 y = PaliFinder.new(3)
 y.run
