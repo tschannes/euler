@@ -1,5 +1,3 @@
-# Project Euler credentials: tschannes, 11l1r11l1r
-
 require '../Timer'
 
 class Fib

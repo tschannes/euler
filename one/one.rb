@@ -1,5 +1,3 @@
-
-
 require '../Timer'
 
 class One
