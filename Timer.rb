@@ -1,6 +1,6 @@
 module	Timer
 
-	def initialize(x)
+	def initialize(*args)
 		@time = Time.now
 		@class = self.class.name 
 	end
