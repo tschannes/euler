@@ -47,26 +47,3 @@ end
 
 x = TripletFinder.new(1000)
 x.run
-
-=begin
-	def root(x)
-		Math.sqrt(x)
-	end
-
-	def findTriplets
-		m = 1
-		n = 2
-		sum = 1
-		while sum <= 1000
-			a = square(n) - square(m)
-			b = 2 * n * m
-			c = square(n) + square(m)
-			m += 1
-			n += 1
-			sum = a + b + c
-			break if sum == 1000
-			puts "#{a} + #{b} + #{c} = #{sum}"
-		end
-		return a*b*c
-	end
-=end
