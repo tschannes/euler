@@ -29,31 +29,52 @@ class ProductFinder
 	def initialize(*args)
 		@num = args[0]
 		@raw = args[1]
+		@greatest = 1
 		super
 	end
 
 	def import
-		@data = @raw.split("\n").map! {|x| x.split(" ").map! {|x| x.to_i}}
+		@data = @raw.split("\n").map! {|x| x.split(" ").map! {|y| y.to_i}}
 	end
 
 	def findProduct
-		greatest = 1
-		row,col = 0
-		while row < @data.length
-			l = row.length
-			while col < l
-				product = @data[row][col] * @data[row+1][col+1] * @data[row+2][col+2] * @data[row+3][col+3]
-				next if product == false
-				greatest = product if product > greatest
+		row = 0
+		@data.each do |ary|
+			col = 0
+			ary.each do |el|
+				next if col > ary.length - @num || row > @data[row].length - @num
+				right = @data[row][col] * @data[row][col+1] * @data[row][col+2] * @data[row][col+3] || 0
+				@greatest = right if right > @greatest
+				down = @data[row][col] * @data[row+1][col] * @data[row+2][col] * @data[row+3][col] || 0
+				@greatest = down if down > @greatest
+				diagonal = @data[row][col] * @data[row+1][col+1] * @data[row+2][col+2] * @data[row+3][col+3] || 0
+				@greatest = diagonal if diagonal > @greatest
+				col += 1
 			end
 			row += 1
 		end
-		greatest
+		@greatest = findProductRightDiagonal if findProductRightDiagonal > @greatest 
+	end
+
+	def findProductRightDiagonal
+		row = 0
+		gr = 1
+		@data.each do |ary|
+			col = @data.length - 1
+			ary.each do |el|
+				next if col < @num || row > @data[row].length - @num
+				diagonal = @data[row][col] * @data[row+1][col-1] * @data[row+2][col-2] * @data[row+3][col-3] || 0
+				gr = diagonal if diagonal > gr
+				col -= 1
+			end
+			row += 1
+		end
+		gr
 	end
 
 	def run
 		import
-		findProduct
+		puts findProduct
 		measure
 	end
 
