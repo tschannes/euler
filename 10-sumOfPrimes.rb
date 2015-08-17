@@ -28,7 +28,7 @@ class PrimeSumFinder
 			range.step(i+1) { |i| sieve[i] = false }
 		end
 
-		puts sieve.each_index.select { |i| sieve[i] }.map { |i| i+1 }.inject(:+)
+		puts sieve.each_index.select { |i| sieve[i] }.map { |i| i+1 }.inject(:+) - 1
 
 	end
 
