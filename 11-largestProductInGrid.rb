@@ -29,7 +29,6 @@ class ProductFinder
 	def initialize(*args)
 		@num = args[0]
 		@raw = args[1]
-		@greatest = 1
 		super
 	end
 
@@ -38,38 +37,29 @@ class ProductFinder
 	end
 
 	def findProduct
+		max = 1
 		row = 0
 		@data.each do |ary|
 			col = 0
-			ary.each do |el|
+			ary.each do
+				#horizontal, vertical, diagonal left
 				next if col > ary.length - @num || row > @data[row].length - @num
-				right = @data[row][col] * @data[row][col+1] * @data[row][col+2] * @data[row][col+3] || 0
-				@greatest = right if right > @greatest
-				down = @data[row][col] * @data[row+1][col] * @data[row+2][col] * @data[row+3][col] || 0
-				@greatest = down if down > @greatest
-				diagonal = @data[row][col] * @data[row+1][col+1] * @data[row+2][col+2] * @data[row+3][col+3] || 0
-				@greatest = diagonal if diagonal > @greatest
+				right = @data[row][col] * @data[row][col+1] * @data[row][col+2] * @data[row][col+3]
+				max = right if right > max
+				down = @data[row][col] * @data[row+1][col] * @data[row+2][col] * @data[row+3][col]
+				max = down if down > max
+				diagonal = @data[row][col] * @data[row+1][col+1] * @data[row+2][col+2] * @data[row+3][col+3]
+				max = diagonal if diagonal > max
+				#diagonal right
+				next if @data.length - col < @num
+				neg = @data.length - col
+				diagonalBottom = @data[row][neg - 1] * @data[row+1][neg - 2] * @data[row+2][neg - 3] * @data[row+3][neg - 4]
+				max = diagonalBottom if diagonalBottom > max
 				col += 1
 			end
 			row += 1
 		end
-		@greatest = findProductRightDiagonal if findProductRightDiagonal > @greatest 
-	end
-
-	def findProductRightDiagonal
-		row = 0
-		gr = 1
-		@data.each do |ary|
-			col = @data.length - 1
-			ary.each do |el|
-				next if col < @num || row > @data[row].length - @num
-				diagonal = @data[row][col] * @data[row+1][col-1] * @data[row+2][col-2] * @data[row+3][col-3] || 0
-				gr = diagonal if diagonal > gr
-				col -= 1
-			end
-			row += 1
-		end
-		gr
+		max
 	end
 
 	def run
