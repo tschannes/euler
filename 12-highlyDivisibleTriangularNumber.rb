@@ -23,27 +23,50 @@ class Class
 
 	include Timer
 
-	def initialize(*args)
+	def initialize(limit)
 		@limit = limit
 		super
 	end
 
-	def count
-		count = 0
-		i = 1
-		ary = []
-		sum = ary.inject{:+}
-		puts sum
-		while count <= @limit
-			return sum if count > @limit
-			ary.push[i]
-			sum = ary.inject[:+]
+	def findFactors(number)
+		factors = []
+		current = 1
+		half = number/2
+		factor = number
+		while current < factor
+			if number % current == 0
+				factor = number/current
+				factors.push(current,factor)
+				current += 1
+			else
+				current += 1
+			end
 		end
+		factors = factors.sort{ |x,y| y <=> x }
+		return factors
+	end
+
+	def count
+		numFactors = 0
+		n = 0
+		triangle = 1
+		
+		while numFactors <= @limit
+			#puts "Number of Dots in Triangle is: " + triangle.to_s
+			#puts "Number of Factors is: " + findFactors(triangle).to_s
+			numFactors = findFactors(triangle).uniq.length
+			#puts "Number of Factors is " + numFactors.to_s
+			break if numFactors >= @limit
+			n += 1
+			triangle = n * (n + 1)/2
+		end
+		
+		puts "The first triangle with " + @limit.to_s + " or more divisors is " + triangle.to_s + "."
+		return triangle
 	end
 
 	def run
-		
-		measure
+		count
 	end
 
 end
