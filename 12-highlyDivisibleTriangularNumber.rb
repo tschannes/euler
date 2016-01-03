@@ -52,7 +52,7 @@ class Class
 		triangle = 1
 		
 		while numFactors <= @limit
-			#puts "Number of Dots in Triangle is: " + triangle.to_s
+			puts "Number of Dots in Triangle is: " + triangle.to_s
 			#puts "Number of Factors is: " + findFactors(triangle).to_s
 			numFactors = findFactors(triangle).uniq.length
 			#puts "Number of Factors is " + numFactors.to_s
@@ -60,7 +60,7 @@ class Class
 			n += 1
 			triangle = n * (n + 1)/2
 		end
-		
+
 		puts "The first triangle with " + @limit.to_s + " or more divisors is " + triangle.to_s + "."
 		return triangle
 	end
