@@ -7,9 +7,9 @@ class ColatzMaker
 
     def initialize(limit)
         @limit = limit
-        @greatestSeq = {}
-        @greatestSeq[:length] = 0
-        @greatestSeq[:num] = 0
+        keys = [:length,:num]
+        @greatestSeq = Hash[keys.zip([0,0])]
+        #returns {:length=>0,:num=>0}
         super
     end
 
@@ -25,7 +25,6 @@ class ColatzMaker
                 num = num * 3 + 1
             end
         end
-        #puts "The Collatz sequence for " + num.to_s + " is " + seq.to_s + "."
         
         seqObj[:length] = seq.length
         return seqObj
@@ -51,5 +50,5 @@ class ColatzMaker
 
 end
 
-x = ColatzMaker.new(1000000)
+x = ColatzMaker.new(100)
 x.run
